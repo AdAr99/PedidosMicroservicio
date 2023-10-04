@@ -42,7 +42,11 @@ public class PedidosServiceImpl implements PedidosService{
  
         Double precio = (template.getForObject(url+"producto/"+codigoproducto, Double.class)*unidades);
 
-        Pedido pedidoN =new Pedido(
+        int stockDisp = template.getForObject(url+"productoStock/"+codigoproducto,  Integer.class)-unidades;
+
+        if(stockDisp > 0){
+                
+            Pedido pedidoN =new Pedido(
             idpedido,
             codigoproducto,
             unidades,
@@ -53,6 +57,9 @@ public class PedidosServiceImpl implements PedidosService{
         dao.save(pedidoN);
 
         template.put(url+"producto/"+codigoproducto+"/"+unidades, null);
+        }
+
+        
 
     }
 
